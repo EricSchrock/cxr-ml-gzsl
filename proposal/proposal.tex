@@ -148,7 +148,22 @@ The model was trained over 100 epochs using the Adam optimizer \cite{kingma2017a
 
 \subsection{Novelty, Relevance, and Hypotheses}
 
-TBD
+CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray images. It is also unique from other ML-GZSL models in the following three ways.
+
+\begin{itemize}
+    \item It can be trained end-to-end, thanks to the trainable visual encoder.
+    \item It maps both the semantic and visual embedding spaces into a shared latent embedding space, instead of mapping the visual space onto the semantic space, loosing less visual information.
+    \item It uses BioBERT, which is trained on a biomedical corpora, resulting semantic embeddings that are tuned for healthcare use cases.
+\end{itemize}
+
+The hypothesis is that these improvements will result in better performance when classifying both seen and unseen diseases in chest X-ray images, compared to two state-of-the-art ML-GZSL models: LESA \cite{9157745} and MLZSL \cite{lee2018multilabelzeroshotlearningstructured}. The results in Figure~\ref{fig:results} bear this out.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{results.png}
+\caption{Performance of LESA, MLZSL, and CXR-ML-ZSL (``$OUR_{e2e}$") on the ChestX-ray8 database \cite{Wang_2017}. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
+\label{fig:results}
+\end{figure}
 
 \subsection{Ablations and Extensions}
 \label{sec:ablations-and-extensions}
