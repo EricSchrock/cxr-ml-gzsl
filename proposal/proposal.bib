@@ -6,3 +6,62 @@
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
+
+@article{10.1109/TPAMI.2012.256,
+author = {Scheirer, Walter and Rocha, Anderson and Sapkota, Archana and Boult, Terrance},
+title = {Toward Open Set Recognition},
+year = {2013},
+issue_date = {July 2013},
+publisher = {IEEE Computer Society},
+address = {USA},
+volume = {35},
+number = {7},
+issn = {0162-8828},
+url = {https://doi.org/10.1109/TPAMI.2012.256},
+doi = {10.1109/TPAMI.2012.256},
+abstract = {To date, almost all experimental evaluations of machine learning-based recognition algorithms in computer vision have taken the form of “closed set” recognition, whereby all testing classes are known at training time. A more realistic scenario for vision applications is “open set” recognition, where incomplete knowledge of the world is present at training time, and unknown classes can be submitted to an algorithm during testing. This paper explores the nature of open set recognition and formalizes its definition as a constrained minimization problem. The open set recognition problem is not well addressed by existing algorithms because it requires strong generalization. As a step toward a solution, we introduce a novel “1-vs-set machine,” which sculpts a decision space from the marginal distances of a 1-class or binary SVM with a linear kernel. This methodology applies to several different applications in computer vision where open set recognition is a challenging problem, including object recognition and face verification. We consider both in this work, with large scale cross-dataset experiments performed over the Caltech 256 and ImageNet sets, as well as face matching experiments performed over the Labeled Faces in the Wild set. The experiments highlight the effectiveness of machines adapted for open set evaluation compared to existing 1-class and binary SVMs for the same tasks.},
+journal = {IEEE Trans. Pattern Anal. Mach. Intell.},
+month = jul,
+pages = {1757–1772},
+numpages = {16},
+keywords = {support vector machines, object recognition, machine learning, face verification, Training data, Training, Testing, Support vector machines, Open set recognition, Object recognition, Face recognition, Face, 1-vs-set machine}
+}
+
+@article{10.1109/TMM.2019.2924511,
+author = {Rahman, Shafin and Khan, Salman and Barnes, Nick},
+title = {<italic>Deep0Tag</italic>: Deep Multiple Instance Learning for Zero-Shot Image Tagging},
+year = {2020},
+issue_date = {Jan. 2020},
+publisher = {IEEE Press},
+volume = {22},
+number = {1},
+issn = {1520-9210},
+url = {https://doi.org/10.1109/TMM.2019.2924511},
+doi = {10.1109/TMM.2019.2924511},
+abstract = {Zero-shot learning aims to perform visual reasoning about unseen objects. In-line with the success of deep learning on object recognition problems, several end-to-end deep models for zero-shot recognition have been proposed in the literature. These models are successful in predicting a single unseen label given an input image but do not scale to cases where multiple unseen objects are present. Here, we focus on the challenging problem of <italic>zero-shot image tagging</italic>, where multiple labels are assigned to an image, that may relate to objects, attributes, actions, events, and scene type. Discovery of these scene concepts requires the ability to process multi-scale information. To encompass global as well as local image details, we propose an automatic approach to locate relevant image patches and model image tagging within the Multiple Instance Learning (MIL) framework. To the best of our knowledge, we propose the first end-to-end trainable deep MIL framework for the multi-label zero-shot tagging problem. We explore several alternatives for instance-level evidence aggregation and perform an extensive ablation study to identify the optimal pooling strategy. Due to its novel design, the proposed framework has several interesting features: 1) unlike previous deep MIL models, it does not use any off-line procedure (e.g., Selective Search or EdgeBoxes) for bag generation. 2) During test time, it can process any number of unseen labels given their semantic embedding vectors. 3) Using only image-level seen labels as weak annotation, it can produce a localized bounding box for each predicted label. We experiment with the large-scale NUS-WIDE and MS-COCO datasets and achieve superior performance across conventional, zero-shot, and generalized zero-shot tagging tasks.},
+journal = {Trans. Multi.},
+month = jan,
+pages = {242–255},
+numpages = {14}
+}
+
+@INPROCEEDINGS{9157745,
+  author={Huynh, Dat and Elhamifar, Ehsan},
+  booktitle={2020 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, 
+  title={A Shared Multi-Attention Framework for Multi-Label Zero-Shot Learning}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={8773-8783},
+  keywords={Training;Image recognition;Semantics;Feature extraction;Task analysis;Complexity theory;Computational modeling},
+  doi={10.1109/CVPR42600.2020.00880}}
+
+@misc{dinu2015improvingzeroshotlearningmitigating,
+      title={Improving zero-shot learning by mitigating the hubness problem}, 
+      author={Georgiana Dinu and Angeliki Lazaridou and Marco Baroni},
+      year={2015},
+      eprint={1412.6568},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/1412.6568}, 
+}

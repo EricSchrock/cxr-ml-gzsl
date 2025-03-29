@@ -103,11 +103,13 @@
 
 \subsection{Proposed Project}
 
-For my project, I propose to reproduce some or all of the findings of the paper, "Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel}. Compute power will likely determine whether I am able to reproduce the full set of findings or merely a subset, given the time remaining in the semester (see Section~\ref{sec:computation-feasibility}). In addition to reproducing original findings, I propose to implement and test at least one ablation or extension of the work done by the authors of the paper (see Section~\ref{sec:ablations-and-extensions}).
+For my project, I propose to reproduce some or all of the findings of the paper, "Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel}. Compute power will likely determine whether I am able to reproduce the full set of findings or merely a subset, given the time remaining in the semester (more about this in Section~\ref{sec:computation-feasibility}). In addition to reproducing original findings, I propose to implement and test at least one ablation or extension of the work done by the authors of the paper (see Section~\ref{sec:ablations-and-extensions}).
 
 \subsection{Problem Statement}
 
-TBD
+Deep learning models for classifying diseases from chest X-ray (CXR) images have had great success, achieving comparable results to human experts. However, collecting and labeling training data for these models is expensive and time-consuming. For rarer diseases, it is often not economical, and sometimes not even possible, to gather the amount of data needed for supervised learning models. When a new disease emerges, the need for massive data collection slows the response. Human radiologists leverage other sources of knowledge to identify diseases they have previously never seen in X-ray form. Could a deep learning model do the same?
+
+Multi-label generalized zero shot learning (ML-GZSL), which uses semantic information to identify classes not present in the set of labeled images used to train the model, has worked well in similar circumstances \cite{10.1109/TPAMI.2012.256, 10.1109/TMM.2019.2924511, 9157745}. However, these prior works have at least two limitations. First, they "extract a fixed visual representation of the image from a pre-trained visual encoder or a detection network" \cite{hayat2021multilabel}, which means they cannot be trained end-to-end. Second, "projecting these extracted visual features to the semantic space shrinks the diversity of the visual information, which gives rise to inherent limitations" \cite{hayat2021multilabel}, one of those being the hubness problem \cite{dinu2015improvingzeroshotlearningmitigating}. Can these limitations be overcome?
 
 \section{Methodology}
 
