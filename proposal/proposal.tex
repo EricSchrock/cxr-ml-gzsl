@@ -84,6 +84,13 @@
 % proceedings, working notes, and technical reports.
 %
 
+\usepackage{amsmath}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    allcolors = blue
+}
+
 % Title
 
 % Your title must be in mixed case, not sentence case.
@@ -115,7 +122,29 @@ Multi-label generalized zero shot learning (ML-GZSL), which uses semantic inform
 
 \subsection{Specific Approach}
 
-TBD
+The paper in question proposes the CXR-ML-GZSL model, shown in Figure~\ref{fig:model}. It is comprised of a pre-trained text encoder to convert class labels to a semantic embedding space, a trainable visual encoder to convert X-ray images to a visual embedding space, and mapping models into a shared latent embedding space. The output is a score for each possible class, representing how relevant it is to the input image.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{model.png}
+\caption{CXR-ML-GZSL \cite{hayat2021multilabel}}
+\label{fig:model}
+\end{figure}
+
+Since the visual encoder is trainable, the whole pipeline between the X-ray image and the semantic embedding of the class label is trainable from end-to-end, better tuning the overall model to the task at hand. Additionally, the added latent embedding space is meant to address the limitations of mapping the visual embedding space directly onto the semantic embedding space.
+
+The increased complexity of this model, compared to other ML-GZSL models, requires a multifaceted training objective, captured in a three-part loss function, where $\gamma_1$ and $\gamma_2$ are the regularization parameters for the second and third components of the loss function.
+
+\begin{equation}
+    \min_{\boldsymbol{\phi} ,\boldsymbol{\rho} ,\boldsymbol{\psi}} \mathcal{L} = \mathcal{L}_{{rank}} +\gamma_{1} \mathcal{L}_{align} +\gamma_{2} \mathcal{L}_{con},
+    \label{eqn:full_loss}
+\end{equation}
+
+\texorpdfstring{$\mathcal{L}_{rank}$}: adds penalties for any positive ground-truth relevance scores not larger than all negative grouth-truth relevance scores by at least a margin of $\delta$. \texorpdfstring{$\mathcal{L}_{align}$}: adds penalties if input images and their labels do not map near each other in the latent embedding space. \texorpdfstring{$\mathcal{L}_{con}$}: add penalties if labels do not have similar relationships in both the semantic and latent embedding spaces, as those semantic relationships are key to zero shot learning. 
+
+For the pre-trained text encoder, the model uses BioBERT \cite{10.1093/bioinformatics/btz682}, which was trained specifically on a biomedical corpora. For the trainable visual encoder, the model uses Densenet-121 \cite{rajpurkar2017chexnetradiologistlevelpneumoniadetection}, as at that time it was the best chest X-ray classifier. For both BioBERT and Densenet-121, the model skips the final classification step in order to get semantic and visual embeddings, respectively, as output instead. The two mapping models are both three layer feed-forward neural networks.
+
+The model was trained over 100 epochs using the Adam optimizer \cite{kingma2017adammethodstochasticoptimization}, with multiple repetitions to tune the learning rate, $\gamma_1$, and $\gamma_2$ hyperparameters. It's performance was measured using the "overall precision, recall and f1 scores for the top $k$ predictions where $k \in \{2, 3 \}$ [as well as] the average area under the receiving operating characteristic curve (AUROC) for seen and unseen classes and its harmonic mean, since computing recall for top k predictions may not be a sufficient indicator of class-wise performance" \cite{hayat2021multilabel}.
 
 \subsection{Novelty, Relevance, and Hypotheses}
 
