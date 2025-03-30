@@ -98,7 +98,7 @@
 % nouns, adverbs, adjectives should be capitalized, including both words in hyphenated terms, while
 % articles, conjunctions, and prepositions are lower case unless they
 % directly follow a colon or long dash
-\title{CS 598 Deep Learning for Healthcare\\Project Proposal}
+\title{CS 598 Deep Learning for Healthcare (Spring, 2025)\\Project Proposal}
 \author {Eric Schrock}
 \affiliations{ejs9@illinois.edu}
 
@@ -168,7 +168,11 @@ The hypothesis is that these improvements will result in better performance when
 \subsection{Ablations and Extensions}
 \label{sec:ablations-and-extensions}
 
-TBD
+The paper in question already includes two ablation studies, one to quantify the contribution of each of the three components of the loss function and one to quantify the contribution of the trainable visual encoder vs several pre-trained visual encoders. An ablation study I could run would be to test the mapping models with fewer neural network layers.
+
+The paper in question only performed hyperparameter tuning on the learning rate and loss function regularization parameters. It suggests further hyperparameter tuning on the batch size and mapping model dimensions. The $\delta$ parameter from the \texorpdfstring{$\mathcal{L}_{rank}$}: loss component could also be tuned.
+
+It is possible that Densenet-121 or BioBERT have been superseded by faster and/or more accurate models since the paper in question was published. Testing CXR-ML-GZSL with newer visual and semantic encoders would be valuable extensions.
 
 \section{Data Access and Implementation Details}
 
