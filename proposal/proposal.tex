@@ -161,7 +161,7 @@ The hypothesis is that these improvements will result in better performance when
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.9\columnwidth]{results.png}
-\caption{Performance of LESA, MLZSL, and CXR-ML-ZSL (``$OUR_{e2e}$") on the ChestX-ray8 database \cite{Wang_2017}. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
+\caption{Performance of LESA, MLZSL, and CXR-ML-ZSL (``$OUR_{e2e}$") on the ChestX-ray14 database \cite{Wang_2017}. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
 \label{fig:results}
 \end{figure}
 
@@ -178,16 +178,20 @@ It is possible that Densenet-121 or BioBERT have been superseded by faster and/o
 
 \subsection{Dataset}
 
-TBD
+I will use the same ChestX-ray14 database \cite{Wang_2017} used by the paper in question. It is publicly available at: \url{https://nihcc.app.box.com/v/ChestXray-NIHCC/}.
 
 \subsection{Model and Codebase}
 
-TBD
+The pre-trained weights for CXR-ML-GZSL are publicly available at: \url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}. I plan to use them to run the model without training, as an initial sanity check.
+
+The code for CXR-ML-GZSL is publicly available at: \url{https://github.com/nyuad-cai/CXR-ML-GZSL/}. I plan to use it as a reference and skeleton. Per the project instructions, I need to reproduce the data preprocessing, model, training loop, and metrics with the help of an LLM. I will plug these items into the existing skeleton provided by this public code repository.
 
 \subsection{Computation Feasibility}
 \label{sec:computation-feasibility}
 
-TBD
+CXR-ML-GZSL was trained on an NVIDIA Quadro RTX 6000, which took around 8 hours \cite{hayat2021multilabel}. I have access to an NVIDIA GeForce RTX 4050 Laptop locally and an NVIDIA Tesla T4 via Google Colab. Both are much less powerful than the Quadro\footnote{\url{https://www.topcpu.net/en/gpu-c/quadro-rtx-6000-vs-geforce-rtx-4050-mobile}}\footnote{\url{https://www.topcpu.net/en/gpu-c/quadro-rtx-6000-vs-tesla-t4}}.
+
+I have several options. First, I can train CXR-ML-GZSL for a few epochs on the RTX 4050 and Tesla T4 to gauge whether the full training time is doable. If not, I can purchase access to an NVIDIA A100\footnote{\url{https://www.topcpu.net/en/gpu-c/quadro-rtx-6000-vs-a100-pcie}} or L4\footnote{\url{https://www.topcpu.net/en/gpu-c/quadro-rtx-6000-vs-l4}} via Google Colab and run the same experiment to gauge whether I can afford a full training run. If not, I will train CXR-ML-GZSL on the RTX 4050 for as many epochs as it can manage.
 
 \bibliography{proposal}
 
