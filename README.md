@@ -4,7 +4,7 @@
 
 This repository represents three attempts to reproduce the results of the paper, ["Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs"](https://arxiv.org/abs/2107.06563), specifically the AUROC scores. See the project [proposal](https://github.com/EricSchrock/cxr-ml-gzsl/blob/main/proposal/proposal.pdf) and [report](https://github.com/EricSchrock/cxr-ml-gzsl/blob/main/report/report.pdf) for greater detail.
 
-The first attempt used both the code and pre-trained weights [provided by the paper](https://github.com/nyuad-cai/CXR-ML-GZSL/). The provided conda environment provided no longer builds. Luckily, the code ran in a newer environment (details provided further down) with only four minor changes. First, I removed any unused imports. Second, I updated `roc_auc_score` to import from `sklearn.metrics` instead of `sklearn.metrics.ranking`. Third, I added the `weights_only=False` parameter to all `torch.load` calls. Fourth, I updated paths and file names in `NIHChestXray` and `argParser` to account for changes in the dataset and for my own dataset download code. This first attempt successfuly reproduced the AUROC scores from the paper, showing that the provided model code and weights match the paper.
+The first attempt used both the code and pre-trained weights [provided by the paper](https://github.com/nyuad-cai/CXR-ML-GZSL/). The provided conda environment no longer builds. Luckily, the code ran in a newer environment (details provided further down) with only four minor changes. First, I removed any unused imports. Second, I updated `roc_auc_score` to import from `sklearn.metrics` instead of `sklearn.metrics.ranking`. Third, I added the `weights_only=False` parameter to all `torch.load` calls. Fourth, I updated paths and file names in `NIHChestXray` and `argParser` to account for changes in the dataset and for my own dataset download code. This first attempt successfuly reproduced the AUROC scores from the paper, showing that the provided model code and weights match the paper.
 
 The second attempt retrained the model using the provided code. Overall, the resulting AUROC scores were worse that those reported by the paper, though two of the fourteen classes had the same AUROC scores and one had better. There are many possible reasons I could not successfully retrain the model, but they fit into two buckets. First, the paper does not clearly list all hyperparameter values used. Second, the provided training code does not appear to be exactly what was used to generate the results from the paper. Below is a list of specific issues I found.
 
@@ -44,10 +44,30 @@ The code from attempts one and two is found in `CXR_ML_GZSL.ipynb`. The code fro
 
 **Note**: Original Python and library versions based on the conda `environment.yml` file provided by the paper.
 
-## Reproducing My Results with Pre-trained Weights
+## Reproducing My Results with Pre-Trained Weights
+
+To quickly reproduce my results, run `csr_ml_gzsl_pretrained.ipynb` to download pre-trained weights for all three attempts, run the models with these pre-trained weights, and report the results. In my testing, this took about an hour, mostly spent downloading the dataset. I ran it on an NVIDIA A100 and it required 10.1 GB of GPU RAM and 20.8 GB of System RAM.
+
+**Note**: If you get an error when loading the pretrained weights, it's possible they got corrupted during the download. You can manually download them at the following links.
+
+1. https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view
+2. https://drive.google.com/file/d/1uHeDxHagEPCvGcHOOI_urj4cNYPliqG1/view?usp=drive_link
+3. https://drive.google.com/file/d/1nX3htkgL_ljA3TVBL9E5GSD3Be_fXMgA/view?usp=drive_link
+
+## Results (AUROC)
+
+![means](report/means.png)
+![seen](report/seen.png)
+![unseen](report/unseen.png)
+
+## Ablation Study
 
 TBD
 
-## Results
+## Reproducing My Ablation Study Results with Pre-Trained Weights
+
+TBD
+
+## PyHealth Contribution
 
 TBD
