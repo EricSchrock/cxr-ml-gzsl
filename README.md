@@ -56,8 +56,16 @@ To quickly reproduce my results, run `csr_ml_gzsl_pretrained.ipynb` to download 
 
 ## Results (AUROC)
 
+### Overall
+
 ![means](report/means.png)
+
+### Classes Seen During Training
+
 ![seen](report/seen.png)
+
+### Classes Excluded from Training
+
 ![unseen](report/unseen.png)
 
 ## Ablation Study
