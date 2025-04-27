@@ -68,11 +68,13 @@ To quickly reproduce my results, run `csr_ml_gzsl_pretrained.ipynb` to download 
 
 ![unseen](report/unseen.png)
 
-## Ablation Study
+## Extension
 
-TBD
+I also extended the findings of the paper in question by replacing DenseNet-121 with EfficientNet-B0 and comparing the AUROC scores and training time. Due to a looming project deadline, I trained the model on half the dataset and for half the number of epochs (50). See `cxr_ml_gzsl_extension.ipynb` for more details.
 
-## Reproducing My Ablation Study Results with Pre-Trained Weights
+![extension](report/extension.png)
+
+## Reproducing My Extension Results with Pre-Trained Weights
 
 TBD
 
