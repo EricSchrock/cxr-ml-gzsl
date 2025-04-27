@@ -76,7 +76,12 @@ I also extended the findings of the paper in question by replacing DenseNet-121 
 
 ## Reproducing My Extension Results with Pre-Trained Weights
 
-TBD
+To quickly reproduce my extension results, run `csr_ml_gzsl_extension_pretrained.ipynb` to download pre-trained weights, run the models with these pre-trained weights, and report the results. In my testing, this took about 10 minutes, though dataset download times can vary dramatically. I ran it on an NVIDIA A100 and it required 8.8 GB of GPU RAM and 15.5 GB of System RAM.
+
+**Note**: If you get an error when loading the pretrained weights, it's possible they got corrupted during the download. You can manually download them at the following links.
+
+1. https://drive.google.com/file/d/1rzvBXBX8u3Yv22ACe2qGeEpMffF6uwNh/view?usp=drive_link
+2. https://drive.google.com/file/d/14flyOtpZGwBDP0pPHxHkqZWtbE-8JcNP/view?usp=drive_link
 
 ## PyHealth Contribution
 
