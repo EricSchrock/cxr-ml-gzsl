@@ -52,7 +52,7 @@ To quickly reproduce my results, run `csr_ml_gzsl_pretrained.ipynb` to download 
 
 1. https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view
 2. https://drive.google.com/file/d/1uHeDxHagEPCvGcHOOI_urj4cNYPliqG1/view?usp=drive_link
-3. https://drive.google.com/file/d/1nX3htkgL_ljA3TVBL9E5GSD3Be_fXMgA/view?usp=drive_link
+3. https://drive.google.com/file/d/1Y-VvHo7b_yok_eSjiHQqbTPXFMtFb4k9/view?usp=drive_link
 
 ## Results (AUROC)
 
