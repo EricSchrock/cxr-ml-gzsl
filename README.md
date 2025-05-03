@@ -87,4 +87,4 @@ To quickly reproduce my extension results, run `csr_ml_gzsl_extension_pretrained
 
 An additional part of my project was to contribute to the [PyHealth](https://github.com/sunlabuiuc/PyHealth/) open source project. I submitted a PR to add the [NIH chest X-ray dataset](https://arxiv.org/abs/1705.02315) to the project. I used `PyHealth.ipynb` to test my contribution.
 
-PR: TBD
+PR: https://github.com/sunlabuiuc/PyHealth/pull/392
