@@ -357,17 +357,53 @@ Training the LLM generated model had worse results than retraining the provided 
 
 \subsection{Extension Study Results}
 
-TBD (mention different epochs and training size)
+My extension study tested the performance of the CXR-ML-GZSL model with a lighter weight visual encoder called EfficientNet-B0. For the sake of time, I cut both the dataset and the number of training epochs in half. The result was significantly faster training at the cost of significantly worse AUROC scores.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{} & \textbf{DenseNet-121} & \textbf{EfficientNet-B0} \\
+\hline
+"Seen" AUROC mean      & 0.69 & 0.60 \\
+"Unseen" AUROC mean    & 0.54 & 0.50 \\
+Harmonic mean of means & 0.60 & 0.55 \\
+Training time (hours)  & 1.83 & 1.48 \\
+\hline
+\end{tabular}
+\caption{Extension Study Results}
+\label{tab:extension}
+\end{table}
 
 \section{Discussion}
 
-TBD
+\subsection{How Reproducible Is This Paper?}
 
-\subsection{Recommendations for Reproducibility}
+The AUROC scores reported by the paper are reproducible using the provided code and pre-trained weights. I suspect the model training can also be reproduced, but not without significant effort. Section~\ref{sec:hard} and Section~\ref{sec:improvements} detail shortcomings in the paper and provided code that make reproducing the model training more difficult than it needs to be.
+
+\subsection{What Was Easy About Reproducing This Paper?}
+
+\begin{itemize}
+    \item The material covered in CS 598: Deep Learning for Healthcare was sufficient to understand the paper.
+    \item Updating the provided code for newer Python and library versions was trivial.
+    \item Running the provided model code using the provided weights was straightforward.
+\end{itemize}
+
+\subsection{What Was Hard About Reproducing This Paper?}
+\label{sec:hard}
+
+\begin{itemize}
+    \item Getting data to and from the cloud and dealing with cloud computing session timeouts took a lot of trial and error.
+    \item The project deadline, long dataset download and model training times, and expensive computational requirements limited the number of development/test iterations I could perform.
+    \item Missing details (like hyperparameter values) and training code bugs increased the number of iterations required to fully reproduce the reported results.
+\end{itemize}
+
+\subsection{How to Improve Reproducibility?}
+\label{sec:improvements}
 
 \begin{itemize}
     \item Use version control from the start to provide a history of changes.
-    \item Check-in the exact code used to generate the results you report. If different results are generated with different commits, tag those commits to make it clear exactly how each result was produced.
+    \item Check-in the exact code used to generate the results you report. If different results are generated from different commits, tag those commits to make it clear exactly how each result was produced.
     \item Set default parameter values to match the values used to generate the results you report.
     \item Train your models on a single epoch to check for off-by-one errors in epoch indexing.
     \item If you experiment with different hyperparameter values, make it clear which values produced the results you report.
@@ -375,7 +411,7 @@ TBD
 
 \section{Contributions}
 
-I completed this project as a team of one. All work, unless otherwise stated, is my own.
+I completed this project as a team of one. All work is my own unless otherwise stated.
 
 \bibliography{report}
 
