@@ -225,6 +225,10 @@ CXR-ML-GZSL, shown in Figure~\ref{fig:model}, is comprised of a pre-trained text
 \label{fig:model}
 \end{figure}
 
+Since the visual encoder is trainable, the whole pipeline between the X-ray image and the semantic embedding of the class label is trainable from end-to-end, better tuning the overall model to the task at hand. Additionally, the added latent embedding space is meant to address the limitations of mapping the visual embedding space directly onto the semantic embedding space.
+
+For the pre-trained text encoder, the model uses BioBERT \cite{10.1093/bioinformatics/btz682}, which was trained specifically on a biomedical corpora. For the trainable visual encoder, the model uses Densenet-121 \cite{rajpurkar2017chexnetradiologistlevelpneumoniadetection}, as at that time it was the best chest X-ray classifier. For both BioBERT and Densenet-121, the model skips the final classification step in order to get semantic and visual embeddings, respectively, as output instead. The two mapping models are both three layer feed-forward neural networks.
+
 CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray images. It is also unique from other ML-GZSL models in the following three ways.
 
 \begin{itemize}
@@ -235,7 +239,63 @@ CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray im
 
 \subsection{Training}
 
-TBD
+\subsubsection{Hyperparameters}
+
+According to the paper, the CXR-ML-GZSL model was trained on a range of learning rate (LR) and gamma values, but it does not state which values produced the best results. I picked a value from each range for my reproduction attempts.
+
+The paper does not state the batch sizes used for the training, validation, and test datasets, so I used the hardcoded values when retraining the provided code and a set batch size of 64 when training the LLM generated model. Where the hyperparameter values in the paper do not match the provided code ($\delta$ and the learning rate decay patience and factor), I used the values from the paper. Table~\ref{tab:hyperparameters} lists the hyperparameter values used for training.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{} & \textbf{Original} & \textbf{Repro} & \textbf{LLM} \\
+\hline
+LR & [1e-4, 5e-5, 1e-5] & 1e-4 & 1e-4 \\
+Patience & 10 epochs & 10 epochs & 10 epochs \\
+Decay factor & 0.01 & 0.01 & 0.01 \\
+Batch sizes & 16/160/48 & 16/160/48 & 64/64/64 \\
+$\gamma_1$ & [0.1, 0.05, 0.01] & 0.1 & 0.1 \\
+$\gamma_2$ & [0.1, 0.05, 0.01] & 0.1 & 0.1 \\
+$\delta$ & 0.5 & 0.5 & 0.5 \\
+Optimizer & Adam & Adam & Adam \\
+\hline
+\end{tabular}
+\caption{Hyperparameters Used (Original, Reproduction Using Original Code, and Reproduction Using LLM Generated Code}
+\label{tab:hyperparameters}
+\end{table}
+
+\subsubsection{Computational Requirements}
+
+Table~\ref{tab:compute} shows the computational requirements for training.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{} & \textbf{Original} & \textbf{Repro} & \textbf{LLM} \\
+\hline
+GPU & Quadro RTX 6000 & A100 & A100 \\
+GPU RAM & ? & 38.8 & 19.1 \\
+System RAM & ? & 24.6 & 22.5 \\
+Epochs & 100 & 100 & 100 \\
+Training (hrs) & $\sim$8 & $\sim$7.5 & $\sim$8.5 \\
+\hline
+\end{tabular}
+\caption{Computational Requirements (Original, Reproduction Using Original Code, and Reproduction Using LLM Generated Code}
+\label{tab:compute}
+\end{table}
+
+\subsubsection{Loss Function}
+
+The increased complexity of CXR-ML-GZSL, compared to other ML-GZSL models, requires a multifaceted training objective, captured in a three-part loss function, where $\gamma_1$ and $\gamma_2$ are the regularization parameters for the second and third components of the loss function.
+
+\begin{equation}
+    \min_{\boldsymbol{\phi} ,\boldsymbol{\rho} ,\boldsymbol{\psi}} \mathcal{L} = \mathcal{L}_{{rank}} +\gamma_{1} \mathcal{L}_{align} +\gamma_{2} \mathcal{L}_{con},
+    \label{eqn:full_loss}
+\end{equation}
+
+\texorpdfstring{$\mathcal{L}_{rank}$}: adds penalties for any positive ground-truth relevance scores not larger than all negative ground-truth relevance scores by at least a margin of $\delta$. \texorpdfstring{$\mathcal{L}_{align}$}: adds penalties if input images and their labels do not map near each other in the latent embedding space. \texorpdfstring{$\mathcal{L}_{con}$}: add penalties if labels do not have similar relationships in both the semantic and latent embedding spaces, as those semantic relationships are key to zero shot learning.
 
 \subsection{Evaluation}
 
@@ -248,6 +308,16 @@ TBD
 \section{Discussion}
 
 TBD
+
+\subsection{Recommendations for Reproducibility}
+
+\begin{itemize}
+    \item Use version control from the start to provide a history of changes.
+    \item Check-in the exact code used to generate the results you report. If different results are generated with different commits, tag those commits to make it clear exactly how each result was produced.
+    \item Set default parameter values to match the values used to generate the results you report.
+    \item Train your models on a single epoch to check for off-by-one errors in epoch indexing.
+    \item If you experiment with different hyperparameter values, make it clear which values produced the results you report.
+\end{itemize}
 
 \section{Contributions}
 
