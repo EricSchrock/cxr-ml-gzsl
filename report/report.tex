@@ -243,7 +243,7 @@ CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray im
 
 \subsubsection{Hyperparameters}
 
-According to the paper, the CXR-ML-GZSL model was trained on a range of learning rate (LR) and gamma values, but it does not state which values produced the best results. I picked a value from each range for my reproduction attempts.
+According to the paper, the CXR-ML-GZSL model was trained on a range of learning rate (LR) and $\gamma$ values, but it does not state which values produced the best results. I picked a value from each range for my reproduction attempts.
 
 The paper does not state the batch sizes used for the training, validation, and test datasets, so I used the hard coded values when retraining the provided code and a set batch size of 64 when training the LLM generated model. Where the hyperparameter values in the paper do not match the code provided ($\delta$ and the learning rate decay patience and factor), I used the values listed in the paper.
 
@@ -309,30 +309,51 @@ For my reproductions, I generated AUROC scores for each of the fourteen diseases
 
 \subsection{Reproduction Results}
 
-Figure~\ref{fig:means} shows the "seen" and "unseen" disease AUROC score means, as well as the harmonic mean of the two. Figure~\ref{fig:seen} shows the AUROC score for each disease seen during training, while Figure~\ref{fig:unseen} shows the AUROC score for each disease not seen during training.
+Table~\ref{tab:results} shows the individual and mean AUROC scores reported by the original paper vs those from my three reproduction attempts. Using the code AND pre-trained weights provided by the original paper perfectly reproduced the reported AUROC scores. This gives confidence that the provided model code and weights are the same as what was used to generate the paper's findings.
 
-TBD (hyperparams, wrong batch sizes, bugs, etc.)
-
-\begin{figure}[h!]
+\begin{table}[h!]
 \centering
-\includegraphics[width=0.9\columnwidth]{means.png}
-\caption{Overall Results}
-\label{fig:means}
-\end{figure}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{} & \textbf{Orig} & \textbf{Pre} & \textbf{Re} & \textbf{LLM} \\
+\hline
+\textbf{Means}             &      &      &      &      \\
+"Seen" mean                & 0.79 & 0.79 & 0.77 & 0.72 \\
+"Unseen" mean              & 0.66 & 0.66 & 0.60 & 0.55 \\
+Harmonic mean of means     & 0.72 & 0.72 & 0.67 & 0.62 \\
+\textbf{"Seen" diseases}   &      &      &      &      \\
+Atelectasis                & 0.76 & 0.76 & 0.72 & 0.73 \\
+Cardiomegaly               & 0.90 & 0.90 & 0.90 & 0.84 \\
+Effusion                   & 0.83 & 0.83 & 0.82 & 0.77 \\
+Infiltration               & 0.70 & 0.70 & 0.67 & 0.63 \\
+Mass                       & 0.80 & 0.80 & 0.79 & 0.76 \\
+Nodule                     & 0.75 & 0.75 & 0.73 & 0.72 \\
+Pneumothorax               & 0.83 & 0.83 & 0.79 & 0.51 \\
+Consolidation              & 0.69 & 0.69 & 0.68 & 0.79 \\
+Pleural thickening         & 0.72 & 0.72 & 0.72 & 0.61 \\
+Hernia                     & 0.90 & 0.90 & 0.86 & 0.83 \\
+\textbf{"Unseen" diseases} &      &      &      &      \\
+Pneumonia                  & 0.62 & 0.62 & 0.55 & 0.60 \\
+Edema                      & 0.67 & 0.67 & 0.54 & 0.49 \\
+Emphysema                  & 0.74 & 0.74 & 0.66 & 0.51 \\
+Fibrosis                   & 0.60 & 0.60 & 0.66 & 0.58 \\
+\hline
+\end{tabular}
+\caption{AUROC Scores from the \textbf{\underline{Orig}}inal Paper vs Reproduced with \textbf{\underline{Pre}}-trained Weights vs Reproduced by \textbf{\underline{Re}}training the Model vs Reproduced with \textbf{\underline{LLM}} Generated Code}
+\label{tab:results}
+\end{table}
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.9\columnwidth]{seen.png}
-\caption{Results (diseases seen during training)}
-\label{fig:seen}
-\end{figure}
+Retraining the provided model with the provided training code did not reproduce the paper's findings. This could be for at least two reasons. First, I may have used the wrong learning rate or $\gamma$ values, as the paper did not specify the exact values used.
 
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.9\columnwidth]{unseen.png}
-\caption{Results (diseases not seen during training)}
-\label{fig:unseen}
-\end{figure}
+Second, the provided training code may not be the same code used to generate the paper's findings. Two things point in this direction. First, the default epoch and $\delta$ values in the provided training script do not match those listed in the paper. Second, the provided training code contains at least three bugs.
+
+\begin{itemize}
+    \item The \texorpdfstring{$\mathcal{L}_{align}$}: value is hardcoded to 0.0.
+    \item The LR decay patience and factor do not match those listed in the paper.
+    \item There is an off-by-one error that causes training to end one epoch early.
+\end{itemize}
+
+Training the LLM generated model had worse results than retraining the provided model. It is likely the differing batch size had a negative impact. It is also likely I did not catch all the bugs in the LLM generated code, given how rapidly I developed it.
 
 \subsection{Extension Study Results}
 
