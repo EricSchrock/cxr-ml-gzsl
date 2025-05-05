@@ -137,7 +137,7 @@ Multi-label generalized zero shot learning (ML-GZSL), which uses semantic inform
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.9\columnwidth]{results.png}
-\caption{Performance of LESA, MLZSL, and CXR-ML-ZSL (``$OUR_{e2e}$") on the ChestX-ray14 dataset. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
+\caption{Performance of LESA, MLZSL, and CXR-ML-GZSL (``$OUR_{e2e}$") on the ChestX-ray14 dataset. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
 \label{fig:results}
 \end{figure}
 
@@ -149,13 +149,13 @@ I was able to access the dataset used by the paper in question (details in Secti
 
 \subsection{Environment}
 
-Table~\ref{tab:environment} shows the Python version and libraries used to implement the CXR-ML-GZSL model.
+Table~\ref{tab:environment} shows the Python version and libraries used to implement the CXR-ML-GZSL model. The "original" versions are based on the environment defined by the provided code\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/blob/master/environment.yml}}.
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{} & \textbf{Original\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/blob/master/environment.yml}}} & \textbf{Reproduction} \\
+\textbf{} & \textbf{Original} & \textbf{Reproduction} \\
 \hline
 Python & 3.6.12 & 3.11.12 \\
 matplotlib & 3.3.3 & 3.10.0 \\
@@ -211,12 +211,12 @@ Pneumothorax & 5,302 & 4.7\% \\
 \label{fig:cxr}
 \end{figure}
 
-The dataset is hosted by the National Institutes of Health (NIH)\footnote{\url{https://www.nih.gov/}} on box.com\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345}}. It includes a Python script\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/file/371647823217}} for automatically downloading the images.
+The dataset is hosted by the National Institutes of Health (NIH)\footnote{\url{https://www.nih.gov/}} on Box\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345}}. It includes a Python script\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/file/371647823217}} to automatically download the images.
 
 \subsection{Model}
 \label{sec:model}
 
-The paper provides code\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/}} implementing the CXR-ML-GZSL model and training, as well as pre-trained weights\footnote{\url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}} that reproduce the reported results. 
+The paper provides a GitHub repository\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/}} that implements the CXR-ML-GZSL model and training, as well as pre-trained weights\footnote{\url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}} that reproduce the reported results. My project GitHub repository\footnote{\url{https://github.com/EricSchrock/cxr-ml-gzsl}} provides links to pre-trained weights that reproduce my results along with instructions.
 
 CXR-ML-GZSL, shown in Figure~\ref{fig:model}, is comprised of a pre-trained text encoder to convert class labels to a semantic embedding space, a trainable visual encoder to convert X-ray images to a visual embedding space, and mapping models into a shared latent embedding space. The output is a score for each possible class, representing how relevant it is to the input image.
 
@@ -229,14 +229,14 @@ CXR-ML-GZSL, shown in Figure~\ref{fig:model}, is comprised of a pre-trained text
 
 Since the visual encoder is trainable, the whole pipeline between the X-ray image and the semantic embedding of the class label is trainable from end-to-end, better tuning the overall model to the task at hand. Additionally, the added latent embedding space is meant to address the limitations of mapping the visual embedding space directly onto the semantic embedding space.
 
-For the pre-trained text encoder, the model uses BioBERT \cite{10.1093/bioinformatics/btz682}, which was trained specifically on a biomedical corpora. For the trainable visual encoder, the model uses Densenet-121 \cite{rajpurkar2017chexnetradiologistlevelpneumoniadetection}, as at that time it was the best chest X-ray classifier. For both BioBERT and Densenet-121, the model skips the final classification step in order to get semantic and visual embeddings, respectively, as output instead. The two mapping models are both three layer feed-forward neural networks.
+For the pre-trained text encoder, the model uses BioBERT \cite{10.1093/bioinformatics/btz682}, which was trained specifically on a biomedical corpora. For the trainable visual encoder, the model uses Densenet-121 \cite{rajpurkar2017chexnetradiologistlevelpneumoniadetection}, as at that time it was the best chest X-ray classifier. For both BioBERT and Densenet-121, the model skips the final classification step in order to get semantic and visual embeddings, respectively, as output instead. The two mapping models are three-layer feedforward neural networks.
 
 CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray images. It is also unique from other ML-GZSL models in the following three ways.
 
 \begin{itemize}
     \item It can be trained end-to-end, thanks to the trainable visual encoder.
-    \item It maps both the semantic and visual embedding spaces into a shared latent embedding space, instead of mapping the visual space onto the semantic space, losing less visual information.
-    \item It uses BioBERT, which was trained on a biomedical corpora, resulting semantic embeddings that are tuned for healthcare use cases.
+    \item It maps the semantic and visual embedding spaces into a shared latent embedding space, instead of mapping the visual space onto the semantic space, causing less visual information to be lost.
+    \item It uses BioBERT, which was trained on a biomedical corpora, resulting in semantic embeddings that are tuned for healthcare use cases.
 \end{itemize}
 
 \subsection{Training}
@@ -245,7 +245,9 @@ CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray im
 
 According to the paper, the CXR-ML-GZSL model was trained on a range of learning rate (LR) and gamma values, but it does not state which values produced the best results. I picked a value from each range for my reproduction attempts.
 
-The paper does not state the batch sizes used for the training, validation, and test datasets, so I used the hardcoded values when retraining the provided code and a set batch size of 64 when training the LLM generated model. Where the hyperparameter values in the paper do not match the provided code ($\delta$ and the learning rate decay patience and factor), I used the values from the paper. Table~\ref{tab:hyperparameters} lists the hyperparameter values used for training.
+The paper does not state the batch sizes used for the training, validation, and test datasets, so I used the hard coded values when retraining the provided code and a set batch size of 64 when training the LLM generated model. Where the hyperparameter values in the paper do not match the code provided ($\delta$ and the learning rate decay patience and factor), I used the values listed in the paper.
+
+The CXR-ML-GZSL model was trained with the Adam optimizer \cite{kingma2017adammethodstochasticoptimization}, which I also used in my reproduction attempts. Table~\ref{tab:hyperparameters} lists the hyperparameter values used for training.
 
 \begin{table}[h!]
 \centering
@@ -278,8 +280,8 @@ Table~\ref{tab:compute} shows the computational requirements for training.
 \textbf{} & \textbf{Original} & \textbf{Repro} & \textbf{LLM} \\
 \hline
 GPU & Quadro RTX 6000 & A100 & A100 \\
-GPU RAM & ? & 38.8 & 19.1 \\
-System RAM & ? & 24.6 & 22.5 \\
+GPU RAM & Unknown & 38.8 & 19.1 \\
+System RAM & Unknown & 24.6 & 22.5 \\
 Epochs & 100 & 100 & 100 \\
 Training (hrs) & $\sim$8 & $\sim$7.5 & $\sim$8.5 \\
 \hline
