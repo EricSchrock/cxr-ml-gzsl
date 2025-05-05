@@ -107,15 +107,15 @@
 \maketitle
 
 \begin{abstract}
-This report details the results of my final project for CS 598: Deep Learning for Healthcare. My final project had three components.
+This report details the results of my final project for CS 598: Deep Learning for Healthcare. My final project had four components.
 
 First, I attempted to reproduce a portion of the findings of the paper "Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel}, specifically the AUROC scores of the proposed model on each of the fourteen diseases labeled in the the dataset, using the code provided by the paper. Running the model with the provided pre-trained weights reproduced the AUROC scores reported by the paper, but retraining the model did not.
 
-Second, I attempted to rapidly rewrite the proposed model from scratch using an LLM as part of a research project on whether LLMs accelerate and enhance healthcare related data science research. It took me just over one day to get to code that looked correct to me, but the resulting AUROC scores were much worse than those from the original model (pre-trained and re-trained). I saved my LLM chat log\footnote{\url{https://github.com/EricSchrock/cxr-ml-gzsl/blob/main/report/report-llm-chat-log-for-research.txt}} for review by the researchers.
+Second, I attempted to rapidly rewrite the proposed model from scratch using an LLM. This was part of a research project on whether LLMs accelerate and enhance healthcare-related data science research. It took me just over one day to get to code that looked correct to me, but the resulting AUROC scores were much worse than those from the original model (pre-trained and re-trained). I saved my LLM chat log\footnote{\url{https://github.com/EricSchrock/cxr-ml-gzsl/blob/main/report/report-llm-chat-log-for-research.txt}} for review by the researchers.
 
-Third, I replaced the visual encoder used in the proposed model, DenseNet-121 \cite{huang2018denselyconnectedconvolutionalnetworks}, with the lighter weight EfficientNet-B0 \cite{tan2020efficientnetrethinkingmodelscaling} to see if I could achieve faster training times with comparable AUROC scores. Training was significantly faster, but the AUROC scores were significantly worse.
+Third, performed an extension study. I replaced the visual encoder used in the proposed model, DenseNet-121 \cite{huang2018denselyconnectedconvolutionalnetworks}, with the lighter weight EfficientNet-B0 \cite{tan2020efficientnetrethinkingmodelscaling} to see if I could achieve faster training times with comparable AUROC scores. Training was significantly faster, but the AUROC scores were significantly worse.
 
-Fourth, I submitted a pull request (PR) to PyHealth \cite{pyhealth2023yang}, an open source project dedicated to supporting healthcare-related AI research and applications. My PR added support for the ChestX-ray14 \cite{Wang_2017} dataset and for binary classification tasks on the fourteen diseases labeled in the dataset.
+Fourth, I submitted a pull request (PR) to PyHealth \cite{pyhealth2023yang}, an open source project dedicated to supporting healthcare-related AI research and applications. My PR added support for the ChestX-ray14 dataset \cite{Wang_2017} and for binary classification tasks on the fourteen diseases labeled in the dataset.
 
 \begin{itemize}
     \item \href{https://drive.google.com/file/d/1fTt2B8VNEQrtBT_Iooby2_viOujf59bX}{Video presentation} \footnote{\url{https://drive.google.com/file/d/1fTt2B8VNEQrtBT_Iooby2_viOujf59bX}}
@@ -128,22 +128,22 @@ Fourth, I submitted a pull request (PR) to PyHealth \cite{pyhealth2023yang}, an 
 
 \subsection{Summary of the Paper in Question}
 
-Deep learning models for classifying diseases from chest X-ray (CXR) images have had great success, achieving comparable results to human experts. However, collecting and labeling training data for these models is expensive and time-consuming. For rarer diseases, it is often not economical, and sometimes not even possible, to gather the amount of data needed for supervised learning models. When a new disease emerges, the need for massive data collection slows the response. Human radiologists leverage other sources of knowledge to identify diseases they have previously never seen in X-ray form. Could a deep learning model do the same?
+Deep learning models for classifying diseases from chest X-ray (CXR) images have had great success, achieving results comparable to those of human experts. However, collecting and labeling training data for these models is expensive and time consuming. For rarer diseases, it is often not economical and sometimes even impossible to gather the amount of data needed for supervised learning models. When a new disease emerges, the need for massive data collection slows the response. Human radiologists leverage other sources of knowledge to identify diseases they have previously never seen in X-ray form. Could a deep learning model do the same?
 
 Multi-label generalized zero shot learning (ML-GZSL), which uses semantic information to identify classes not present in the set of labeled images used to train the model, has worked well in similar circumstances \cite{10.1109/TPAMI.2012.256, 10.1109/TMM.2019.2924511, 9157745}. However, these prior works have at least two limitations. First, they "extract a fixed visual representation of the image from a pre-trained visual encoder or a detection network" \cite{hayat2021multilabel}, which means they cannot be trained end-to-end. Second, "projecting these extracted visual features to the semantic space shrinks the diversity of the visual information, which gives rise to inherent limitations" \cite{hayat2021multilabel}, one of those being the hubness problem \cite{dinu2015improvingzeroshotlearningmitigating}. Can these limitations be overcome?
 
-"Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel} proposes the CXR-ML-GZSL model, which addresses both limitations. The result is better performance when classifying both seen and unseen diseases in chest X-ray images, compared to two state-of-the-art ML-GZSL models: LESA \cite{9157745} and MLZSL \cite{lee2018multilabelzeroshotlearningstructured} (Figure~\ref{fig:results}).
+"Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel} proposes the CXR-ML-GZSL model, which addresses both limitations. The result is better performance when classifying both seen and unseen diseases in chest X-ray images, compared to two state-of-the-art ML-GZSL models: LESA \cite{9157745} and MLZSL \cite{lee2018multilabelzeroshotlearningstructured} (see Figure~\ref{fig:results}).
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.9\columnwidth]{results.png}
-\caption{Performance of LESA, MLZSL, and CXR-ML-ZSL (``$OUR_{e2e}$") on the ChestX-ray14 dataset \cite{Wang_2017}. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
+\caption{Performance of LESA, MLZSL, and CXR-ML-ZSL (``$OUR_{e2e}$") on the ChestX-ray14 dataset. Metrics are precision, recall, f1, and AUROC (split by seen, unseen, and the harmonic mean of the two) \cite{hayat2021multilabel}.}
 \label{fig:results}
 \end{figure}
 
 \subsection{Scope of Reproducibility}
 
-TBD
+I was able to access the dataset used by the paper in question (details in Section~\ref{sec:data}) and reproduce the reported AUROC scores for the fourteen diseases against which the CXR-ML-GZSL model was tested using the provided code and pre-trained weights (details in Section~\ref{sec:model}). However, when I re-trained the model using the code provided, I was not able to reproduce the reported AUROC scores. Furthermore, when I rewrote the data processing, model, training, and evaluation code from scratch with the help of an LLM, I was unable to reproduce the reported AUROC scores.
 
 \section{Methodology}
 
@@ -173,6 +173,7 @@ tqdm & 4.55.1 & 4.67.1 \\
 \end{table}
 
 \subsection{Data}
+\label{sec:data}
 
 The ChestX-ray14 dataset \cite{Wang_2017} contains 112,120 chest X-ray images labeled for the presence or absence of fourteen different diseases. The average number of diseases present in each X-ray is 0.72. Table~\ref{tab:dataset-statistics} shows how frequently each disease appears in the dataset. Figure~\ref{fig:cxr} shows an example chest X-ray from the dataset.
 
@@ -213,6 +214,7 @@ Pneumothorax & 5,302 & 4.7\% \\
 The dataset is hosted by the National Institutes of Health (NIH)\footnote{\url{https://www.nih.gov/}} on box.com\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345}}. It includes a Python script\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/file/371647823217}} for automatically downloading the images.
 
 \subsection{Model}
+\label{sec:model}
 
 The paper provides code\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/}} implementing the CXR-ML-GZSL model and training, as well as pre-trained weights\footnote{\url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}} that reproduce the reported results. 
 
