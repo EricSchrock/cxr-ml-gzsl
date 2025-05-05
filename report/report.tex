@@ -132,24 +132,7 @@ Deep learning models for classifying diseases from chest X-ray (CXR) images have
 
 Multi-label generalized zero shot learning (ML-GZSL), which uses semantic information to identify classes not present in the set of labeled images used to train the model, has worked well in similar circumstances \cite{10.1109/TPAMI.2012.256, 10.1109/TMM.2019.2924511, 9157745}. However, these prior works have at least two limitations. First, they "extract a fixed visual representation of the image from a pre-trained visual encoder or a detection network" \cite{hayat2021multilabel}, which means they cannot be trained end-to-end. Second, "projecting these extracted visual features to the semantic space shrinks the diversity of the visual information, which gives rise to inherent limitations" \cite{hayat2021multilabel}, one of those being the hubness problem \cite{dinu2015improvingzeroshotlearningmitigating}. Can these limitations be overcome?
 
-"Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel} proposes the CXR-ML-GZSL model (Figure~\ref{fig:model}). It is comprised of a pre-trained text encoder to convert class labels to a semantic embedding space, a trainable visual encoder to convert X-ray images to a visual embedding space, and mapping models into a shared latent embedding space. The output is a score for each possible class, representing how relevant it is to the input image.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.9\columnwidth]{model.png}
-\caption{CXR-ML-GZSL \cite{hayat2021multilabel}}
-\label{fig:model}
-\end{figure}
-
-CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray images. It is also unique from other ML-GZSL models in the following three ways.
-
-\begin{itemize}
-    \item It can be trained end-to-end, thanks to the trainable visual encoder.
-    \item It maps both the semantic and visual embedding spaces into a shared latent embedding space, instead of mapping the visual space onto the semantic space, losing less visual information.
-    \item It uses BioBERT, which was trained on a biomedical corpora, resulting semantic embeddings that are tuned for healthcare use cases.
-\end{itemize}
-
-The result is better performance when classifying both seen and unseen diseases in chest X-ray images, compared to two state-of-the-art ML-GZSL models: LESA \cite{9157745} and MLZSL \cite{lee2018multilabelzeroshotlearningstructured} (Figure~\ref{fig:results}).
+"Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel} proposes the CXR-ML-GZSL model, which addresses both limitations. The result is better performance when classifying both seen and unseen diseases in chest X-ray images, compared to two state-of-the-art ML-GZSL models: LESA \cite{9157745} and MLZSL \cite{lee2018multilabelzeroshotlearningstructured} (Figure~\ref{fig:results}).
 
 \begin{figure}[h!]
 \centering
@@ -191,7 +174,7 @@ tqdm & 4.55.1 & 4.67.1 \\
 
 \subsection{Data}
 
-The ChestX-ray14 dataset \cite{Wang_2017} contains 112,120 chest X-rays labeled for the presence or absence of fourteen different diseases. The average number of diseases present in each X-ray image is 0.72. The dataset is hosted by the National Institutes of Health (NIH)\footnote{\url{https://www.nih.gov/}} on box.com\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345}}. Table~\ref{tab:dataset-statistics} shows how frequently each disease appears in the dataset.
+The ChestX-ray14 dataset \cite{Wang_2017} contains 112,120 chest X-ray images labeled for the presence or absence of fourteen different diseases. The average number of diseases present in each X-ray is 0.72. Table~\ref{tab:dataset-statistics} shows how frequently each disease appears in the dataset. Figure~\ref{fig:cxr} shows an example chest X-ray from the dataset.
 
 \begin{table}[h!]
 \centering
@@ -220,9 +203,35 @@ Pneumothorax & 5,302 & 4.7\% \\
 \label{tab:dataset-statistics}
 \end{table}
 
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{cxr.png}
+\caption{Chest X-ray Displaying Cardiomegaly}
+\label{fig:cxr}
+\end{figure}
+
+The dataset is hosted by the National Institutes of Health (NIH)\footnote{\url{https://www.nih.gov/}} on box.com\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/folder/36938765345}}. It includes a Python script\footnote{\url{https://nihcc.app.box.com/v/ChestXray-NIHCC/file/371647823217}} for automatically downloading the images.
+
 \subsection{Model}
 
-TBD (move some of the material from the introduction here?)
+The paper provides code\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/}} implementing the CXR-ML-GZSL model and training, as well as pre-trained weights\footnote{\url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}} that reproduce the reported results. 
+
+CXR-ML-GZSL, shown in Figure~\ref{fig:model}, is comprised of a pre-trained text encoder to convert class labels to a semantic embedding space, a trainable visual encoder to convert X-ray images to a visual embedding space, and mapping models into a shared latent embedding space. The output is a score for each possible class, representing how relevant it is to the input image.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{model.png}
+\caption{CXR-ML-GZSL \cite{hayat2021multilabel}}
+\label{fig:model}
+\end{figure}
+
+CXR-ML-GZSL is the first use of ML-GZSL to classify diseases from chest X-ray images. It is also unique from other ML-GZSL models in the following three ways.
+
+\begin{itemize}
+    \item It can be trained end-to-end, thanks to the trainable visual encoder.
+    \item It maps both the semantic and visual embedding spaces into a shared latent embedding space, instead of mapping the visual space onto the semantic space, losing less visual information.
+    \item It uses BioBERT, which was trained on a biomedical corpora, resulting semantic embeddings that are tuned for healthcare use cases.
+\end{itemize}
 
 \subsection{Training}
 
