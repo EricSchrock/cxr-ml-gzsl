@@ -299,11 +299,40 @@ The increased complexity of CXR-ML-GZSL, compared to other ML-GZSL models, requi
 
 \subsection{Evaluation}
 
-TBD
+For my reproductions, I generated AUROC scores for each of the fourteen diseases present in the dataset. Additionally, I generated the mean AUROC scores for the ten diseases seen by the model during training and the four diseases withheld from training, along with the harmonic mean between the "seen" and "unseen" means.
 
 \section{Results}
 
-TBD
+\subsection{Reproduction Results}
+
+Figure~\ref{fig:means} shows the "seen" and "unseen" disease AUROC score means, as well as the harmonic mean of the two. Figure~\ref{fig:seen} shows the AUROC score for each disease seen during training, while Figure~\ref{fig:unseen} shows the AUROC score for each disease not seen during training.
+
+TBD (hyperparams, wrong batch sizes, bugs, etc.)
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{means.png}
+\caption{Overall Results}
+\label{fig:means}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{seen.png}
+\caption{Results (diseases seen during training)}
+\label{fig:seen}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\columnwidth]{unseen.png}
+\caption{Results (diseases not seen during training)}
+\label{fig:unseen}
+\end{figure}
+
+\subsection{Extension Study Results}
+
+TBD (mention different epochs and training size)
 
 \section{Discussion}
 
