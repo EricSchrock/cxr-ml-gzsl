@@ -113,7 +113,7 @@ First, I attempted to reproduce a portion of the findings of the paper "Multi-La
 
 Second, I attempted to rapidly rewrite the proposed model from scratch using an LLM. This was part of a research project on whether LLMs accelerate and enhance healthcare-related data science research. It took me just over one day to get to code that looked correct to me, but the resulting AUROC scores were much worse than those from the original model (pre-trained and re-trained). I saved my LLM chat log\footnote{\url{https://github.com/EricSchrock/cxr-ml-gzsl/blob/main/report/report-llm-chat-log-for-research.txt}} for review by the researchers.
 
-Third, performed an extension study. I replaced the visual encoder used in the proposed model, DenseNet-121 \cite{huang2018denselyconnectedconvolutionalnetworks}, with the lighter weight EfficientNet-B0 \cite{tan2020efficientnetrethinkingmodelscaling} to see if I could achieve faster training times with comparable AUROC scores. Training was significantly faster, but the AUROC scores were significantly worse.
+Third, I performed an extension study. I replaced the visual encoder used in the proposed model, DenseNet-121 \cite{huang2018denselyconnectedconvolutionalnetworks}, with the lighter weight EfficientNet-B0 \cite{tan2020efficientnetrethinkingmodelscaling} to see if I could achieve faster training times with comparable AUROC scores. Training was significantly faster, but the AUROC scores were significantly worse.
 
 Fourth, I submitted a pull request (PR) to PyHealth \cite{pyhealth2023yang}, an open source project dedicated to supporting healthcare-related AI research and applications. My PR added support for the ChestX-ray14 dataset \cite{Wang_2017} and for binary classification tasks on the fourteen diseases labeled in the dataset.
 
@@ -216,7 +216,7 @@ The dataset is hosted by the National Institutes of Health (NIH)\footnote{\url{h
 \subsection{Model}
 \label{sec:model}
 
-The paper provides a GitHub repository\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/}} that implements the CXR-ML-GZSL model and training, as well as pre-trained weights\footnote{\url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}} that reproduce the reported results. My project GitHub repository\footnote{\url{https://github.com/EricSchrock/cxr-ml-gzsl}} provides links to pre-trained weights that reproduce my results along with instructions.
+"Multi-Label Generalized Zero Shot Learning for the Classification of Disease in Chest Radiographs" \cite{hayat2021multilabel} provides a GitHub repository\footnote{\url{https://github.com/nyuad-cai/CXR-ML-GZSL/}} that implements the CXR-ML-GZSL model and training, as well as pre-trained weights\footnote{\url{https://drive.google.com/file/d/17ioJMW3qNx1Ktmr-hXn-eqp431cm49Rm/view}} that reproduce the reported results. My project GitHub repository\footnote{\url{https://github.com/EricSchrock/cxr-ml-gzsl}} provides links to pre-trained weights that reproduce my results along with instructions.
 
 CXR-ML-GZSL, shown in Figure~\ref{fig:model}, is comprised of a pre-trained text encoder to convert class labels to a semantic embedding space, a trainable visual encoder to convert X-ray images to a visual embedding space, and mapping models into a shared latent embedding space. The output is a score for each possible class, representing how relevant it is to the input image.
 
